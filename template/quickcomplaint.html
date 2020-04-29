@@ -1,0 +1,152 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Quick Complint</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <style media="screen">
+      .rotate {
+        animation: rotation 4s infinite linear;
+      }
+      @keyframes rotation {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(359deg);
+        }
+      }
+
+      h6{
+        font-family: 'Roboto Condensed', sans-serif;
+      }
+      h5{
+        font-family: 'Roboto Condensed', sans-serif;
+      }
+
+      input{
+        border:1px solid #1f4975 !important;
+      }
+      input:focus{
+        border-radius: 0px !important;
+        box-shadow : none !important;
+      }
+
+      textarea{
+        border:1px solid #1f4975 !important;
+      }
+      textarea:focus{
+        height:200px !important;
+      }
+
+      .imgspan{
+        background-image:url(https://images.pexels.com/photos/33999/pexels-photo.jpg);background-size:cover;padding:290px 60px;
+      }
+
+      @media only screen and (max-width: 400px){
+        .imgspan{
+          padding:50px !important;
+        }
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
+    <script>
+    if (annyang) {
+      // Let's define our first command. First the text we expect, and then the function it should call
+      var commands = {
+        'report *say': function(say) {
+          var $x = $('#report').html( $('#report').html()+' '+say);
+        }
+        ,
+        'punctuation full stop': function(say) {
+          var $x = $('#report').html( $('#report').html()+'.');
+        }
+        ,
+        'punctuation comma': function(say) {
+          var $x = $('#report').html( $('#report').html()+',');
+        }
+        ,
+        'First Name *fname': function(fname) {
+          var $x =  $('#name').val(fname);
+        }
+        ,
+        'Last Name *lname': function(lname) {
+          var $x =  $('#lname').val(lname);
+        }
+        ,
+        'Aadhar *aadhar': function(aadhar) {
+          var $x =  $('#aadhar').val(aadhar);
+        }
+        ,
+        'Subject *sub': function(sub) {
+          var $x =  $('#sub').val(sub);
+        }
+        ,
+        'Submit': function() {
+          $('#save').trigger("click");
+        }
+        ,
+        'Remove *tex': function(tex) {
+          var $x = $('#report').html();
+          var $y = $x.lastIndexOf(tex);
+          $('#report').html($x.slice(0,$y-1));
+        }
+        ,
+        'delete my report': function() {
+          $('#report').html('');
+        }
+        ,
+      };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+      annyang.debug()
+      // Start listening. You can call this here, or attach this call to an event, button, etc.
+      annyang.start();
+    }
+    </script>
+  </head>
+  <body style="padding:20px;background-color:#fbe8e83b !important;">
+    <div class="container" style="background-color:white !important;-webkit-box-shadow: 5px 9px 7px -3px rgba(107,107,107,1);
+-moz-box-shadow: 5px 9px 7px -3px rgba(107,107,107,1);
+box-shadow: 5px 9px 7px -3px rgba(107,107,107,1);">
+      <div class="row">
+        <div class="col-sm-6 imgspan">
+          <span class="text-center" style="font-family:'Roboto Condensed', sans-serif;font-size:50px;">We hear your voices.</span>
+        </div>
+        <div class="col-sm-6">
+          <form class="form-group" action="" method="post" style="padding:20px;">
+            {% csrf_token %}
+            <h5>Complaint Form</h5>
+            <h6>Say "First Name" followed by your first name</h6>
+            <input type="text" name="fname" value="" placeholder="First Name" class="form-control" id="name"><br>
+            <h6>Say "Last Name" followed by your last name</h6>
+            <input type="text" name="lname" value="" placeholder="Last Name" class="form-control" id="lname"><br>
+            <h6>Say "Aadhar" followed by your 12 digit aadhar no.</h6>
+            <input type="text" name="aadhar" value="" placeholder="Aadhar" class="form-control" id="aadhar"><br>
+            <h6>Say "Subject" followed by your subject</h6>
+            <input type="text" name="sub" value="" placeholder="Subject" class="form-control" id="sub"><br>
+            <h6>Say "Report" whenever you want add something in textbox.</h6>
+            <textarea class="form-control" id="report" name="tname" rows="8" cols="80" placeholder="Start writing by saying 'Report' "></textarea><br>
+            <input type="submit" name="" value="Submit" class="form-control" id="save" style="  background-color:#1f1b40 !important;color:white;">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

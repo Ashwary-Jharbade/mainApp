@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Sign In</title>
+    <script type="text/javascript">
+
+      function mail(tb)
+      {
+        x=tb.value
+        pattern =new RegExp("[A-Za-z0-9]+(@gmail.com)$")
+        res=pattern.test(x)
+        var z = document.getElementById('button');
+        if(res==true)
+        {
+          document.getElementById("mail").innerHTML="";
+          z.disabled = '';
+        }
+        else
+        {
+          document.getElementById("mail").innerHTML="Warning : Please enter a valid gmail id.";
+          z.disabled = 'True';
+        }
+      }
+
+      document.addEventListener('keydown', function() {
+        if (event.keyCode == 123) {
+          alert("Page inspection has been restricted !");
+          return false;
+        } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
+          alert("Page inspection has been restricted !");
+          return false;
+        } else if (event.ctrlKey && event.keyCode == 85) {
+          alert("!");
+          return false;
+        }
+      }, false);
+
+      if (document.addEventListener) {
+        document.addEventListener('contextmenu', function(e) {
+          alert("Page inspection has been restricted !");
+          e.preventDefault();
+        }, false);
+      } else {
+        document.attachEvent('oncontextmenu', function() {
+          alert("Page inspection has been restricted !");
+          window.event.returnValue = false;
+        });
+      }
+    </script>
+  </head>
+  <body style="background-color:transparent;">
+    <div class="jumbotron" style="background-image: url(https://st2.depositphotos.com/2454953/9684/i/950/depositphotos_96845790-stock-photo-scale-justice-word-cloud-concept.jpg);background-size:contain;margin-bottom: 0px !important;">
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+          <div class="row">
+            <div class="col-sm-6 offset-sm-3" style="background-color:#181a27b8;border-radius: 20px;border:2px solid transparent;">
+              <form class="form-group" style="padding: 10px;" method="post">
+                {% csrf_token %}
+                <legend class="text-center" style="color:white;">Sign In</legend><br>
+                <p class="text-center" style="color: coral;">Welcome back! Login to access.</p>
+                <input type="email" name="usernm" class="form-control" placeholder="username *" style="border:2px solid #043b59;" required oninput="mail(this)">
+                <div class="text-center" id="mail" style="color:red;font-weight: bold;"></div><br>
+                <input type="password" name="passwd" class="form-control" placeholder="password *" style="border:2px solid #043b59;" required><br>
+                <input type="submit" name="" class="form-control" value="Sign In" style="background-image: linear-gradient(to right top, #f2bd82, #ecac6b, #e79a56, #e18741, #db742e, #dc6c25, #dc631b, #dd5911, #e5590d, #ed5909, #f55904, #fd5900);border:2px solid coral;color: white;" id="button"><br>
+                <p class="text-center" style="color:white;">{{ filler }}</p>
+                <p class="text-center"> <span style="color:white;">Did you </span> <a href="#" style="color: coral;">forgot your password</a> ?</p>
+                <legend class="text-center" style="color: #043b59;">Or</legend>
+                <p class="text-center"><b style="color:white;">Unable to sign in try sign up first</b></p>
+                <a href="/signup/"><input type="button" name="" value="Sign Up" class="form-control" style="background-image: linear-gradient(to right top, #f8ffee, #bcd2c4, #82a6a1, #4e7b83, #255065, #183d57, #0f2b47, #0a1a37, #0a1a37, #0a1a37, #0a1a37, #0a1a37);border:2px solid #0a1a37b3;color: white;"></a><br>
+                <a href="/quickcomplaint/"><input type="button" name="" value="Skip and file complaint" class="form-control" style="background-image: linear-gradient(to right top, #f8ffee, #beeed6, #6ddbdc, #00c2f3, #00a0ff, #009bff, #0096ff, #0091ff, #00aeff, #00c6ff, #00dbf2, #48ede2);color: white;border:2px solid cyan;"></a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,247 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <title>Hello, world!</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shoelace-css/1.0.0-beta16/shoelace.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+
+    <style media="screen">
+      body{
+        font-family: 'Roboto Condensed', sans-serif;
+      }
+
+      ul{
+        list-style: none;
+      }
+      .element {
+          display: inline-block;
+          height: 100px;
+          width: 100px;
+          font-size: 1px;
+          padding: 1px;
+          color: white;
+          margin-right: 5px;
+          margin-left: 5px;
+          animation: skew 3s infinite;
+          transform: skew(3deg);
+          animation-direction: alternate;
+        }
+
+        @keyframes skew {
+          0% {
+            transform: skew(3deg, 3deg);
+          }
+          100% {
+            transform: skew(-3deg, -3deg);
+          }
+        }
+
+
+      .para{
+        padding: 10px;
+        border: 2px solid white;
+        border-radius:20px;
+        background-color: white;
+        width:200px;
+        box-shadow: 2px cyan;
+      }
+    </style>
+  </head>
+  <body onload="getLocation()">
+    <div class="container-fluid" style="background-image: linear-gradient(to right top, #00f087, #00eea2, #00ebb8, #00e7ca, #00e2d7, #40e1d8, #5bdfd8, #70ded8, #8ae1d4, #a0e3d2, #b3e5d2, #c4e7d5);padding:20px;margin-bottom:0px;min-height:695px !important;margin:0px !important;">
+      <div class="conatiner">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+              <img src="{% static 'images/lncop.png' %}" alt="" class="img-fluid element">
+              <br><br>
+              <h6 style="color:white;" id="wish"></h6>
+              <h6>
+                <div id="queset">
+                  <p id="fque">What and who is the subject of incident?</p>
+                  {% for i in obj %}
+                    <p>{{ i }}</p>
+                  {% endfor %}
+                </div>
+              </h6>
+          </div>
+        </div>
+        <br>
+        <div style="text-align:center;">
+          <button type="button" name="button" id="start-button">Start Session</button>
+          <button type="button" name="button" id="prev-button">Prev Que</button>
+          <button type="button" name="button" id="next-button">Next Que</button>
+          <script type="text/javascript">
+
+          function onfeed(message){
+            var speech = new SpeechSynthesisUtterance();
+            speech.text = message;
+            speech.volume = 1;
+            speech.rate = 0.8;
+            speech.pitch = 1;
+            window.speechSynthesis.speak(speech);
+          }
+
+          $( document ).ready(function() {
+              $('#mainapp').hide();
+              $('#end-button').hide();
+              $('#prev-button').hide();
+              $('#next-button').hide();
+              $('#queset').hide();
+              $('#wish').html('Welcome {{ request.user }}')
+              $("img").css("margin-top", "14%");
+          });
+
+          $('#start-button').on('click',function(){
+            onfeed('Hello , I am Siraaz and your session incharge.');
+            $("img").css("margin-top", "2%");
+            $('#mainapp').show();
+            $('#end-button').show();
+            $('#prev-button').show();
+            $('#next-button').show();
+            $('#start-button').hide();
+            onfeed('Here is the first question I would ask . Please do not afraid and feel comfortable to answer.');
+            $('#wish').html($('#fque').html());
+            onfeed($('#wish').html());
+          });
+
+          $('#end-button').on('click',function(){
+            onfeed('Session Saved');
+          });
+
+          var $eleholder =$('p');
+          var $eleini = $eleholder;
+          var $pre;
+
+          $('#next-button').on('click',function(){
+            $('#wish').html($eleholder.next().html());
+            onfeed($('#wish').html());
+            $eleholder = $eleholder.next();
+            if ($eleholder.html() == undefined) {
+              $eleholder = $pre;
+            }
+            else if($eleholder.next().html() == undefined)
+            {
+              $pre = $eleholder;
+            }
+          });
+
+          $('#prev-button').on('click',function(){
+            $('#wish').html($eleholder.prev().html());
+            onfeed($('#wish').html());
+            $eleholder = $eleholder.prev();
+            if($eleholder == $eleini){
+              $eleholder = $eleini;
+            }
+            else if($eleholder.html() == undefined)
+            {
+              $eleholder = $eleini;
+            }
+          });
+
+          /*
+          window.onbeforeunload = function() {
+              console.log('hello');
+              return "Dude, are you sure you want to leave? Think of the kittens!";
+          }
+          */
+          </script>
+        </div>
+      </div>
+      <div class="conatiner" id="mainapp">
+        <div class="app text-center">
+          <button id="start-record-btn" title="Start Recording">Start Recognition</button>
+          <button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
+          <button id="read-note-btn" title="Read note">Read Note</button>
+          <button id="pause-read" title="pause note">Stop Reading</button>
+          <script type="text/javascript">
+          $('#pause-read').on('click', function(e) {
+            console.log('pause');
+            instructions.text('Reading Stopped.');
+            window.speechSynthesis.cancel();
+          });
+          </script>
+
+
+          <script>
+          function getLocation() {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+              x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+          }
+
+          function showPosition(position) {
+            var x = document.getElementById("latitude");
+          var y = document.getElementById("longitude");
+
+            x.value = position.coords.latitude;
+              y.value = position.coords.longitude;
+          }
+          </script>
+
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-single">
+              <input type="text" id="latitude" name="lat" style="display:none;">
+              <input type="text" id="longitude" name="long" style="display:none;">
+                <textarea id="note-textarea" name="fstatement" placeholder="Create a new note by typing or using voice recognition." rows="6"></textarea>
+            </div>
+            <p id="recording-instructions" style="padding-bottom:0px !important;margin:10px !important;">Press the <strong>Start Recognition</strong> button and allow access.</p>
+            <div style="padding:10px;">
+               <span style="float:left;padding:10px;">Click to "Choose Files" to select any proof you have in digital form of incident happened: </span> <input type="file" multiple name="files" value="" style="float:left;padding:10px;">
+            </div><br><br>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" id="submit-button">Submit F.I.R</button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">F.I.R. Session</h5>
+                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                  Please make sure you have supported you F.I.R with proper evidence if found any and the information provided is more factual rather than just people point of view.Please click confirm to submit or close the pop up.
+                  </div>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="switch1" onclick="checkall()" required>
+                    <label class="custom-control-label" for="switch1"> <span style="color: coral;">I have read the above statement</span></label>
+                  </div><br>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="/userapp/firsession/"><button type="submit" class="btn btn-primary">Confirm</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!--voice -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

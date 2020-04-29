@@ -1,0 +1,117 @@
+{% extends 'policeSkeleton.html' %}
+
+{% block  policedetails %}
+
+<div class="w3-panel w3-padding">
+  <p class="w3-center" style="font-size:20px;">Profile</p>
+  <form class="w3-form" action="/policeapp/policedetails/" method="post">
+    {% csrf_token %}
+    <div class="w3-panel">
+      <div class="w3-right">
+        <input class="w3-button w3-red" id="edit" type="button" name="" value="Edit">
+        <input class="w3-button w3-green" id="sub" type="submit" name="" value="Save" disabled>
+      </div>
+    </div>
+    Name
+    <input class="w3-input" id="fname" type="text" name="fullname" value="{{ obj.fullname }}" placeholder="Enter Full Name" disabled required ><br>
+    Gender
+    <select class="w3-input" id="gen" name="gender" disabled required >
+      {% if obj.gender == 'Male' %}
+        <option selected value="Male">Male</option>
+      {% endif %}
+      {% if obj.gender == 'Female' %}
+        <option selected value="Female">Female</option>
+      {% endif %}
+      {% if obj.gender == 'Third' %}
+        <option selected value="Third">Third</option>
+      {% endif %}
+      {% if obj.gender == '' %}
+        <option  value="Male">Male</option>
+        <option  value="Female">Female</option>
+        <option  value="Third">Third</option>
+      {% endif %}
+    </select><br>
+    DOB
+    <input class="w3-input" id="dob" type="text" name="dateofbirth" value="{{ obj.dateofbirth }}" placeholder="Date Of Birth format(yyyy-mm-dd)" disabled required><br>
+    Post/Status
+    <select class="w3-input" id="occu" name="status" disabled required>
+      {% if obj.post %}
+      <option selected value="{{ obj.post }}">{{ obj.post }}</option>
+      {% endif %}
+
+      {% if obj.maritialstatus == '' %}
+      <option selected value="None">Select</option>
+      <option value="Constable">Constable</option>
+      <option value="Senior Constable">Senior Constable</option>
+      <option value="Head Constable">Head Constable</option>
+      <option value="Assistant Sub-Inspector">Assistant Sub-Inspector</option>
+      <option value="Sub-Inspector">Sub-Inspector</option>
+      <option value="Inspector">Inspector</option>
+      <option value="Superintendent of Police ">Superintendent of Police </option>
+      <option value="Senior Superintendent of Police ">Senior Superintendent of Police </option>
+      <option value="Deputy Inspector General of Police">Deputy Inspector General of Police</option>
+      <option value="Inspector General of Police ">Inspector General of Police </option>
+      <option value="Additional Director General of Police ">Additional Director General of Police </option>
+      <option value="Special Director General of Police ">Special Director General of Police </option>
+      <option value="Director General of Police">Director General of Police</option>
+      {% endif %}
+    </select><br>
+    Police Station
+    <select class="w3-input" id="pols" name="pstat" disabled required>
+      {% if obj.pid == None %}
+        <option value="None">Select</option>
+        {% for i in pobj %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      {% endif %}
+
+      {% if obj.pid %}
+      <option selected value="obj.pid">{{ obj.pid }}</option>
+      {% endif %}
+    </select><br>
+    Maritial Status
+    <select class="w3-input" id="mar" name="maritialstatus" disabled required>
+      {% if obj.maritialstatus == 'Married' %}
+      <option selected value="Married">Married</option>
+      {% endif %}
+      {% if obj.maritialstatus == 'Unmarried' %}
+      <option selected value="Unmarried">Unmarried</option>
+      {% endif %}
+      {% if obj.maritialstatus == '' %}
+      <option value="Married">Married</option>
+      <option value="Unmarried">Unmarried</option>
+      {% endif %}
+    </select><br>
+    Mobile No.
+    <input class="w3-input" id="mob" type="number" name="mobile" value="{{ obj.mobile }}" placeholder="Enter Mobile No." disabled required><br>
+    Local Address
+    <input class="w3-input" id="ladd" type="text" name="laddress" value="{{ obj.laddress }}" placeholder="Enter Local Address" disabled required><br>
+    Permanent Address
+    <input class="w3-input" id="padd" type="text" name="paddress" value="{{ obj.paddress }}" placeholder="Enter Permanent Address" disabled required><br>
+  </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(edit).click(function(){
+    $(sub).removeAttr('disabled');
+
+    $(mob).removeAttr('disabled');
+    $(fname).removeAttr('disabled');
+    $(ladd).removeAttr('disabled');
+    $(padd).removeAttr('disabled');
+    $(gen).removeAttr('disabled');
+    $(mar).removeAttr('disabled');
+    $(occu).removeAttr('disabled');
+    $(dob).removeAttr('disabled');
+    $(pols).removeAttr('disabled');
+
+    $(edit).prop('disabled','true');
+  });
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="{% static 'js/gjquery.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/shoelace.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <div class="container">
+            <h3 class="no-browser-support">Sorry, Your Browser Doesn't Support the Web Speech API. Try Opening This Demo In Google Chrome.</h3>
+
+            <div class="app">
+                <div class="input-single">
+                    <textarea id="note-textarea" placeholder="Create a new note by typing or using voice recognition." rows="6"></textarea>
+                </div>
+                <button id="start-record-btn" title="Start Recording">Start Recognition</button>
+                <button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
+                <button id="read-note-btn" title="Read note">Read Note</button>
+                <button id="pause-read-btn" title="pause note">Stop Reading</button>
+                <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
+            </div>
+
+        </div>
+
+        <script src="{% static 'js/cloudfarejquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+  </body>
+</html>

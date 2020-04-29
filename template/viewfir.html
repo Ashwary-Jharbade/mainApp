@@ -1,0 +1,242 @@
+{% extends 'policeSkeleton.html' %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/shoelace.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% block viewfir %}
+<script src="{% static 'js/gjquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/Chart.js' %}"></script>
+<div class="w3-panel">
+  <div class="w3-panel w3-border">
+    <div class="w3-padding">
+      <div class="w3-panel">
+        <h4 class="w3-center">F.I.R. Details</h4>
+        <div style="border:1px solid grey;">
+          <div class="w3-left">
+            <p><b>Fir No.</b> : <span style="color:red;"> {{ obj.firid }} </span></p>
+            <p><b>Creation Date</b> : <span style="color:red;"> {{ obj.creationdate }} </span></p>
+            <p><b>Submission Date</b> : <span style="color:red;"> {{ obj.submissiondate }} </span></p>
+          </div>
+          <div class="w3-right">
+            <p><b>Police Station</b> : <span style="color:red;"> {{ obj.policestation }} </span></p>
+            <p><b>Police Station Code</b> : <span style="color:red;"> {{ obj.policestation.pid }} </span></p>
+            <p><b>F.I.R. Status</b> : <span style="color:red;"> {{ obj.status}} </span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="w3-panel">
+        <h4 class="w3-center">Details of Complainant</h4>
+        <div style="border:1px solid grey;">
+          <div class="w3-left">
+            <p><b>Full Name</b> : {{ obj.userdetailobj.fullname }}</p>
+            <p><b>Gender</b> : {{ obj.userdetailobj.gender }}</p>
+            <p><b>DOB</b> : {{ obj.userdetailobj.dateofbirth }}</p>
+            <p><b>Occupation</b> : {{ obj.userdetailobj.occupation }}</p>
+          </div>
+          <div class="w3-right">
+            <p><b>Aadhar</b> : {{ adh }}</p>
+            <p><b>Maritial status</b> : {{ obj.userdetailobj.maritialstatus }}</p>
+            <p><b>Mobile</b> : {{ obj.userdetailobj.mobile }}</p>
+            <p><b>Local Address</b> : {{ obj.userdetailobj.laddress }}</p>
+            <p><b>Permanent Address</b> : {{ obj.userdetailobj.paddress }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="w3-panel">
+        <h4 class="w3-center">F.I.R Statement</h4>
+        <div style="border:1px solid grey;"></div>
+        <div class="w3-panel">
+          <div class="w3-border w3-padding" id="content">
+            {{ obj.content }}
+          </div>
+        </div>
+        <div class="w3-panel w3-center">
+          <button type="button" id="read" name="button" class="w3-red w3-button w3-margin">Read Statement</button>
+          <button type="button" id="stop" name="button" class="w3-red w3-button w3-margin">Stop Reading</button>
+          <script type="text/javascript">
+            function onfeed(message){
+              var speech = new SpeechSynthesisUtterance();
+              speech.text = message;
+              speech.volume = 1;
+              speech.rate = 0.8;
+              speech.pitch = 1;
+              window.speechSynthesis.speak(speech);
+            }
+
+            $('#read').on('click',function(){
+                onfeed($('#content').html());
+            });
+
+            $('#stop').on('click',function(){
+                window.speechSynthesis.cancel();
+            });
+          </script>
+        </div>
+      </div>
+      <div class="w3-panel">
+        <h4 class="w3-center">F.I.R Statement Analysis</h4>
+        <div style="border:1px solid grey;"></div>
+        <div class="w3-row">
+          <div class="w3-col l6 m6 s6">
+            <canvas id="myChart" width="400" height="400"></canvas>
+            <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var data = {
+                datasets: [{
+                  {% if polarity > zero %}
+                      data: [{{ polarity }}*100,100-({{ polarity }}*100)],
+                  {% endif %}
+                  {% if polarity < zero %}
+                      data: [{{ polarity }}*100,100+({{ polarity }}*100)],
+                  {% endif %}
+                    backgroundColor:[
+                    "#6384FF",
+                    "#63FF84",
+                    ]
+                }],
+
+                // These labels appear in the legend and in the tooltips when hovering different arcs
+                labels: [
+                {% if polarity > zero %}
+                    '+ Positive Polarity',
+                {% endif %}
+                {% if polarity < zero %}
+                    '- Negative Polarity',
+                {% endif %}
+                ]
+            };
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+            });
+            </script>
+          </div>
+          <div class="w3-col l6 m6 s6">
+            <canvas id="mChart" width="400" height="400"></canvas>
+            <script>
+            var ctx = document.getElementById('mChart').getContext('2d');
+            var data = {
+                datasets: [{
+                  data: [{{ subjectivity }}*100,100-({{ subjectivity }}*100)],
+                  backgroundColor: [
+                  "#8463FF",
+                  "#63FF84",
+                  ]
+                }],
+
+                // These labels appear in the legend and in the tooltips when hovering different arcs
+                labels: [
+                    'subjectivity'
+                ]
+            };
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+            });
+            </script>
+          </div>
+        </div>
+      </div>
+
+      <div class="w3-panel">
+        <h4 class="w3-center">The F.I.R is About</h4>
+        <div style="border:1px solid grey;"></div>
+        <div class="w3-panel">
+          <b><h5>This FIR is about :
+            {% for i in about %}
+              {{ i }} ,
+            {% endfor %}
+          </h5></b>
+        </div>
+      </div>
+
+      <div class="w3-panel">
+        <h4 class="w3-center">Supportive Evidences</h4>
+        <div style="border:1px solid grey;"></div>
+        <div class="w3-row w3-center">
+          {% for i in eobj %}
+          <div class="w3-col l12 m12 s12">
+            <br>
+            {% if '.mp4' in i.efile.url %}
+              <p>{{ i.efile }}</p>
+              <video width="280" height="240" controls class="w3-video">
+                <source src="{{ i.efile.url }}" type="video/mp4">
+                <source src="{{ i.efile.url }}" type="video/ogg">
+                Your browser does not support the video tag.
+              </video>
+            {% elif '.jpg' in i.efile.url %}
+              {{ i.efile }}<br>
+              <img src="{{ i.efile.url }}" alt="no image" class="w3-image">
+            {% elif '.mp3' in i.efile.url %}
+              {{ i.efile }}<br>
+              <audio src="{{ i.efile.url }}" controls  style="border:2px solid grey;border-radius:40px;outline:none;">
+              </audio>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="w3-container">
+          <h4 class="w3-center">Actions</h4>
+          <div style="border:1px solid grey;"></div><br>
+          <div class="w3-row">
+            <a href="javascript:void(0)" onclick="openCity(event, 'London');">
+              <div class="w3-col m6 tablink w3-bottombar   w3-hover-light-grey w3-padding w3-center w3-border-red">Write Action</div>
+            </a>
+            <a href="javascript:void(0)" onclick="openCity(event, 'Paris');">
+              <div class="w3-col m6 tablink w3-bottombar w3-hover-light-grey w3-padding w3-center">View Action List</div>
+            </a>
+          </div>
+          <div id="London" class="w3-container city" style="display:block">
+            <div class="w3-panel w3-padding">
+              <form  method="post" action="" enctype="multipart/form-data" class="w3-form w3-center">
+                {% csrf_token %}
+                <textarea class="w3-input" name="action" rows="12" cols="80" style="resize:none;outline:1px solid blue;"></textarea>
+                <br>
+                <a href="/policeapp/viewfir/{{ id }}/"><button type="submit" name="button" class="w3-button w3-red">Submit</button></a>
+              </form>
+            </div>
+          </div>
+          <div id="Paris" class="w3-container city" style="display:none">
+            {% if act %}
+            {% elif 1 %}
+            <p class="w3-large w3-center"><b>No action on F.I.R yet.</b></p>
+            {% endif %}
+            <br><br>
+            {% for i in act %}
+              <div class="">
+                <b>-> {{ i.actdate }}</b>
+                <div class="w3-panel w3-white w3-padding w3-border">
+                  <b>Action id :</b>{{ i.actionid }}<br>
+                  <b>Status :</b>{{ i.status }}
+                  <p class="w3-center"><b>-by {{ i.police.fullname }} ,{{ i.police.post }} ,{{ i.police.pid }}</b></p>
+                  <p>{{ i.content }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+      <script>
+        function openCity(evt, cityName) {
+          var i, x, tablinks;
+          x = document.getElementsByClassName("city");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+          }
+          tablinks = document.getElementsByClassName("tablink");
+          for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+          }
+          document.getElementById(cityName).style.display = "block";
+          evt.currentTarget.firstElementChild.className += " w3-border-red";
+        }
+      </script>
+  </div>
+</div>
+
+<script src="{% static 'js/cloudfarejquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+{% endblock %}

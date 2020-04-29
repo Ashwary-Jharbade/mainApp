@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Sign Up</title>
+
+    <script type="text/javascript">
+      function mail(tb)
+      {
+        document.getElementById("switch1").checked = false;
+        x=tb.value
+        pattern =new RegExp("[A-Za-z0-9]+(@gmail.com)$")
+        res=pattern.test(x)
+        var z = document.getElementById('button');
+        if(res==true)
+        {
+          document.getElementById("mail").innerHTML="";
+          z.disabled = '';
+        }
+        else
+        {
+          document.getElementById("mail").innerHTML=" Please enter valid gmail id.";
+          z.disabled = 'True';
+        }
+      }
+
+
+      function passcheck(tb){
+        document.getElementById("switch1").checked = false;
+        x=tb.value;
+        pattern =new RegExp("^[a-zA-Z0-9~!#$@&*_-]{8,16}");
+        res = pattern.test(x);
+        var z = document.getElementById('button');
+        if (res == true){
+          document.getElementById("passan").innerHTML="";
+          z.disabled = '';
+        }
+        else{
+          document.getElementById("passan").innerHTML=" Please enter strong password min length 8 character and including special character.";
+          z.disabled = 'True';
+        }
+      }
+
+      function cpasscheck(tb){
+        document.getElementById("switch1").checked = false;
+        x=tb.value;
+        y=document.getElementById("passwd").value;
+        var z = document.getElementById('button');
+        if(x==y){
+          document.getElementById("cpassan").innerHTML="";
+          z.disabled = '';
+        }
+        else{
+          document.getElementById("cpassan").innerHTML="Password does not match";
+          z.disabled = 'True';
+        }
+      }
+
+      function checkall(){
+        var x = document.getElementById("passwd").value;
+        var y = document.getElementById("cpasswd").value;
+        if(x == y){
+          console.log(x);
+        }
+        else{
+          alert("Password does not match");
+          document.getElementById("switch1").checked = false;
+        }
+      }
+
+      document.addEventListener('keydown', function() {
+        if (event.keyCode == 123) {
+          alert("Page inspection has been restricted !");
+          return false;
+        } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
+          alert("Page inspection has been restricted !");
+          return false;
+        } else if (event.ctrlKey && event.keyCode == 85) {
+          alert("!");
+          return false;
+        }
+      }, false);
+
+      if (document.addEventListener) {
+        document.addEventListener('contextmenu', function(e) {
+          alert("Page inspection has been restricted !");
+          e.preventDefault();
+        }, false);
+      } else {
+        document.attachEvent('oncontextmenu', function() {
+          alert("Page inspection has been restricted !");
+          window.event.returnValue = false;
+        });
+      }
+
+    </script>
+
+  </head>
+  <body style="background-color:transparent;">
+    <!--https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg-->
+    <div class="jumbotron" style="background-image: url(https://st2.depositphotos.com/2454953/9684/i/950/depositphotos_96845790-stock-photo-scale-justice-word-cloud-concept.jpg);margin-bottom: 0px !important;">
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+          <div class="row">
+            <div class="col-sm-6 offset-sm-3" style="background-color:#181a27b8;border-radius: 20px;border:2px solid transparent;">
+              <form class="form-group" style="padding: 10px;" action="/psignup/" method="POST">
+                <legend class="text-center" style="color:white;">Police Sign Up</legend><br>
+                <p class="text-center" style="color: coral;">Welcome Buddy ! Join us</p>
+                {% csrf_token %}
+                <input type="number" name="aadhar" class="form-control" placeholder="aadhar *" style="border:2px solid #043b59;" required>
+                <div class=""></div><br>
+
+                <input type="email" name="username" class="form-control" placeholder="username *" style="border:2px solid #043b59;" required oninput="mail(this)">
+                <div id="mail" class="text-center" style="color:white;font-weight: bold;"></div><br>
+
+                <input type="password" name="password" class="form-control" placeholder="password *" style="border:2px solid #043b59;" required oninput="passcheck(this)" id="passwd">
+                <div id="passan" style="color: red;font-weight: bold;" class="text-center"></div><br>
+
+                <input type="password" name="cpassword" class="form-control" placeholder="confirm password *" style="border:2px solid #043b59;" required oninput="cpasscheck(this)" id="cpasswd">
+                <div id="cpassan" style="color: red;font-weight: bold;" class="text-center"></div><br>
+
+                <input type="text" name="usertype" value="Police" hidden>
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="switch1" onclick="checkall()" required>
+                  <label class="custom-control-label" for="switch1"> <span style="color:white;">I agree with </span> <a href="/terms/" style="color: coral;">Terms and Conditions</a></label>
+                </div><br>
+
+                <input type="submit" name="" class="form-control" value="Sign Up" style="background-image: linear-gradient(to right top, #f2bd82, #ecac6b, #e79a56, #e18741, #db742e, #dc6c25, #dc631b, #dd5911, #e5590d, #ed5909, #f55904, #fd5900);border:2px solid coral;color: white;" id="button" onclick="checkall()"><br>
+
+                <p class="text-center"><b style="color:white;">If signed try signing in to get more access.</b></p><br>
+                <a href="/"><input type="button" name="" value="Sign In" class="form-control" style="background-image: linear-gradient(to right top, #f8ffee, #bcd2c4, #82a6a1, #4e7b83, #255065, #183d57, #0f2b47, #0a1a37, #0a1a37, #0a1a37, #0a1a37, #0a1a37);border:2px solid #0a1a37b3;color: white;"></a><br>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

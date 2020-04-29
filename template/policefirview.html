@@ -1,0 +1,24 @@
+{% extends 'policeSkeleton.html' %}
+
+{% block policefirview %}
+<div class="w3-panel">
+  <p class="w3-center">F.I.R.</p>
+  <div class="w3-panel">
+    {% for i in obj %}
+    <div class="w3-panel">
+      {{ i.submissiondate }}
+      <div class="w3-panel  w3-border w3-padding">
+        <div class="w3-panel">
+          <b>FIR No. : </b> {{ i }}<br>
+          <b> Status :</b> {{ i.status }}
+
+        </div>
+        <div class="w3-padding">
+            <a href="/policeapp/viewfir/{{ i.id }}/"><button class="w3-button w3-green" type="button" name="button">View Fir</button></a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

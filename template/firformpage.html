@@ -1,0 +1,28 @@
+{% extends 'userSkeleton.html' %}
+
+{% block firformpage %}
+
+<div class="w3-panel">
+  <p class="w3-font w3-center w3-red">Note : Please make sure you have completed your profile before filling F.I.R.</p>
+  <div class="w3-panel w3-border" style="font-size:20px;">
+    <p class="w3-center">About F.I.R.</p>
+    <div class="w3-panel" style="font-size:16px;">
+      <p>An FIR is a written document that is filed by the police when you are a victim of a cognizable offence, i.e. an offence for which police can take action without prior court approval (a warrant). Section 154 of the Criminal Procedure Code, 1973 (‘CrPC’) defines what amounts to first information. Examples include but are not limited to murder, rape, theft, insulting the modesty of women and kidnapping.</p>
+      <p>Anyone who is either a victim of a crime, or has witnessed a crime or has information regarding a crime may file an FIR.</p>
+      <p>An FIR has to be filed immediately and any delay in reporting must be justified. The police officer must give you a copy of the FIR at no cost to you.</p>
+      <p>An FIR is a very important document as it is one of the first steps towards justice for the wronged. Police take up investigation of the case only after registering the FIR in their respective police station.</p>
+      <p></p>
+    </div>
+  </div>
+  <div class="w3-center">
+    {% if obj.fullname %}
+      <a href="/userapp/firsession/"><button type="button" name="button" class="w3-red w3-button">Go gor F.I.R. Session</button></a>
+    {% endif %}
+    {% if obj.fullname == '' %}
+      <a href="/userapp/userdetails/"><button type="button" name="button" class="w3-red w3-button">Go for F.I.R. Session</button></a>
+    {% endif %}
+    <p style="color:blue;">Clicking button won't work unless your profile is filled try searching user/profile icon on sidebar for more help.</p>
+  </div>
+</div>
+
+{% endblock %}

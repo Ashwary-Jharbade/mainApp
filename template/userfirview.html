@@ -1,0 +1,27 @@
+{% extends 'userSkeleton.html' %}
+
+{% block firview %}
+<div class="w3-panel">
+  <p class="w3-center">F.I.R.</p>
+  <div class="w3-panel">
+    {% if obj == None %}
+      <h4 class="w3-center">No F.I.R.'s to display</h4>
+    {% endif %}
+    {% for i in obj %}
+    <div class="w3-panel">
+      {{ i.creationdate }}
+      <div class="w3-panel  w3-border w3-padding">
+        <div class="w3-panel">
+          <b>FIR No. : </b> {{ i }}<br>
+          <b>Status :</b>{{ i.status }}
+        </div>
+        <div class="w3-padding">
+            <a href="/userapp/uviewfir/{{ i.id }}/"><button class="w3-button w3-green" type="button" name="button">View Fir</button></a>
+            <a href="/userapp/deletefir/{{ i.id }}/"><button class="w3-button w3-red" type="button" name="button">Delete Fir</button></a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
